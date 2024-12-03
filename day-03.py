@@ -2,9 +2,9 @@ import re
 
 def generate(s, part):
     flag = True
-    for x in re.findall(r"(mul[(]\d{1,3},\d{1,3}[)]|don't|do)", s):
+    for x in re.findall(r"(mul[(]\d{1,3},\d{1,3}[)]|don't[(][)]|do[(][)])", s):
         if x.startswith('do'):
-            flag = (x == 'do')
+            flag = "'" not in x
         else:
             if flag or part == 1:
                 a, b = map(int, re.findall(r"\d+", x))
