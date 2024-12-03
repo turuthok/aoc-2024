@@ -2,7 +2,7 @@ import re
 
 def generate(s, part):
     flag = True
-    for x in re.findall(r"(mul[(]\d{1,3},\d{1,3}[)]|don't[(][)]|do[(][)])", s):
+    for x in re.findall(r"(mul\(\d{1,3},\d{1,3}\)|don't\(\)|do\(\))", s):
         if x.startswith('do'):
             flag = "'" not in x
         else:
