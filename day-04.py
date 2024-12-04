@@ -3,19 +3,15 @@ rows, cols = len(arr), len(arr[0])
 inbound = lambda i, j: 0 <= i < rows and 0 <= j < cols
 
 def search(word):
+    n = len(word)
     for i in range(rows):
         for j in range(cols):
-            for di in range(-1, 2):
-                for dj in range(-1, 2):
+            for di in [-1, 0, 1]:
+                for dj in [-1, 0, 1]:
                     if (di, dj) == (0, 0): continue
-                    s, ii, jj = '', i, j
-                    for _ in range(len(word)):
-                        if not inbound(ii, jj): break
-                        s += arr[ii][jj]
-                        ii += di; jj += dj
-                    else:
-                        if s == word:
-                            yield (i, j, di, dj)
+                    if not inbound(i + (n-1) * di, j + (n-1) * dj): continue
+                    if word == ''.join(arr[i + k * di][j + k * dj] for k in range(n)):
+                        yield (i, j, di, dj)
 
 
 print(len(list(search('XMAS'))))
