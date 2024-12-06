@@ -22,6 +22,5 @@ def check(i, j, oi=-1, oj=-1, d=0):
         if (i, j, d) in seen: return None
         seen.add((i, j, d))
 
-print(len({(i, j) for i, j, _ in check(si, sj)}))
-print(sum(not check(si, sj, oi, oj) for oi in range(rows) for oj in range(cols) if arr[oi][oj] == '.'))
-
+print(len(visited := {(i, j) for i, j, _ in check(si, sj)}))
+print(sum(not check(si, sj, oi, oj) for (oi, oj) in visited if arr[oi][oj] == '.'))
