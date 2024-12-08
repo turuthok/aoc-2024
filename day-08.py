@@ -3,8 +3,6 @@ rows, cols = len(arr), len(arr[0])
 inbound = lambda i, j: 0 <= i < rows and 0 <= j < cols
 
 from collections import defaultdict
-from itertools import combinations
-from math import gcd
 
 antennas = defaultdict(list)
 for i in range(rows):
@@ -16,25 +14,18 @@ def calc(part):
     res = set()
 
     for coords in antennas.values():
-        for (a, b), (c, d) in combinations(coords, 2):
-            di = c-a; dj = d-b
+        for (a, b) in coords:
+            for (c, d) in coords:
+                if (a, b) == (c, d): continue
+                di = c-a; dj = d-b
 
-            if part == 1:
-                if inbound(*(p := (a-di, b-dj))): res.add(p)
-                if inbound(*(p := (c+di, d+dj))): res.add(p)
-            else:
-                g = gcd(abs(di), abs(dj))
-                di //= g; dj //= g
-
-                i, j = a, b
-                while inbound(i, j):
-                    res.add((i, j))
-                    i += di; j += dj
-
-                i, j = a, b
-                while inbound(i, j):
-                    res.add((i, j))
-                    i -= di; j -= dj
+                if part == 1:
+                    if inbound(*(p := (a-di, b-dj))): res.add(p)
+                else:
+                    i, j = a, b
+                    while inbound(i, j):
+                        res.add((i, j))
+                        i += di; j += dj
 
     return len(res)
 
