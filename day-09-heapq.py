@@ -37,20 +37,17 @@ print(res)
 # Part 2    
 for l, r, block_id in arr[::-1]:
     length = r-l
-    picked_slot = -1
-    for slot in range(length, 10):
-        if free[slot]:
-            if picked_slot < 0 or free[slot][0] < free[picked_slot][0]:
-                picked_slot = slot
-    if picked_slot < 0: continue
-    fl = free[picked_slot][0]
+    free_slots = [(x, free[x]) for x in range(length, 10) if free[x]]
+    if not free_slots: continue
+    free_slot_length, free_slot = min(((x, slot) for x, slot in free_slots), key=lambda x: x[1][0])
+    fl = free_slot[0]
     if fl < l:
-        fl = heapq.heappop(free[picked_slot])
+        fl = heapq.heappop(free_slot)
         for p in range(fl, fl + length):
             disk[p] = block_id
         for p in range(l, r):
             disk[p] = -1
-        if length < picked_slot:
-            heapq.heappush(free[picked_slot - (length)], fl+length)
+        if length < free_slot_length:
+            heapq.heappush(free[free_slot_length-length], fl+length)
 
 print(sum(l * block_id for l, block_id in enumerate(disk) if block_id >= 0))
