@@ -1,6 +1,6 @@
 import heapq
 
-s = input() * 1000
+s = input()
 
 arr = []
 free = [[] for _ in range(10)]
