@@ -17,13 +17,6 @@ def go(i, j):
         aa |= a; bb += b
     return aa, bb
 
-part1 = part2 = 0
-for i in range(rows):
-    for j in range(cols):
-        if arr[i][j] != 0: continue
-        a, b = go(i, j)
-        part1 += len(a)
-        part2 += b
-
-print(part1)
-print(part2)
+trailheads = [(i, j) for i in range(rows) for j in range(cols) if arr[i][j] == 0]
+print(sum(len(go(i, j)[0]) for (i, j) in trailheads))
+print(sum(go(i, j)[1] for (i, j) in trailheads))
