@@ -1,13 +1,11 @@
 import heapq
 
 arr = [x.strip() for x in open(0)]
-R, C = len(arr), len(arr[0])
 DIR = [(-1, 0), (0, 1), (1, 0), (0, -1)]
-INF = 1_000_000_000
 
 def find_cell(char):
-    for i in range(R):
-        for j in range(C):
+    for i in range(len(arr)):
+        for j in range(len(arr[0])):
             if arr[i][j] == char: return (i, j)
 
 def relax(cost, si, sj, sd, d, dist):
@@ -28,21 +26,22 @@ def dijkstra(si, sj, sd):
             relax(cost+1, si+dy, sj+dx, sd, d, dist)
     return dist
 
-(si, sj), sd = find_cell('S'), 1
-from_s = dijkstra(si, sj, sd)
+si, sj = find_cell('S')
+from_s = dijkstra(si, sj, 1)
 
 ei, ej = find_cell('E')
 best = min(from_s[(ei, ej, x)] for x in range(4))
 print(best)
 
-from_e = [dijkstra(ei, ej, x) for x in range(4)]
-res = 0
-for i in range(R):
-    for j in range(C):
-        if arr[i][j] == '#': continue
-        for d in range(4):
-            cost = from_s[i, j, d] + min(x[i, j, d^2] for x in from_e)
-            if cost == best:
-                res += 1
-                break
-print(res)
+cells = {(ei, ej)}
+def go(ei, ej, ed, expected_cost):
+    if (ei, ej, ed) not in from_s or from_s[(ei, ej, ed)] != expected_cost: return
+    cells.add((ei, ej))
+
+    dy, dx = DIR[ed]
+    go(ei-dy, ej-dx, ed, expected_cost-1)
+    go(ei, ej, (ed+1) % 4, expected_cost-1000)
+    go(ei, ej, (ed+3) % 4, expected_cost-1000)
+
+for ed in range(4): go(ei, ej, ed, best)
+print(len(cells))
