@@ -1,7 +1,5 @@
 import re
 
-a, b, c, *instr = map(int, re.findall(r"\d+", open(0).read()))
-
 def combo(operand, a, b, c):
     if operand < 4: return operand
     return [a, b, c][operand-4]
@@ -17,6 +15,8 @@ def exec_one(a, b, c):
         if opcode == 4: b = b ^ c
         if opcode == 5: out = combo(operand, a, b, c) & 7
     return (out, a)
+
+a, b, c, *instr = map(int, re.findall(r"\d+", open(0).read()))
 
 res = []
 while a:
