@@ -24,7 +24,6 @@ while a:
     res.append(opcode)
 print(*res, sep=',')
 
-a = 0
 target = instr[::-1]
 
 def go(a, idx):
