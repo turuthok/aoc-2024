@@ -26,7 +26,7 @@ b = bfs(ei, ej)
 no_cheat_cost = a[(ei, ej)]
 
 def cheat(n):
-    cheats = set()
+    res = 0
     for i in range(R):
         for j in range(C):
             if arr[i][j] == '#': continue
@@ -38,8 +38,8 @@ def cheat(n):
                     if arr[ii][jj] == '#': continue
                     d = abs(dy) + abs(dx)
                     if no_cheat_cost - (a[(i, j)] + b[(ii, jj)] + d) >= 100:
-                        cheats.add((i, j, ii, jj))
-    return len(cheats)
+                        res += 1
+    return res
 
 print(cheat(2))
 print(cheat(20))
